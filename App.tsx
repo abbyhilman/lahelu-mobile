@@ -1,17 +1,30 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '@/pages/HomeScreen';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { spacing } from '@/utils/sizes';
 
+import { LogBox } from "react-native";
 
-const Stack = createStackNavigator();
+LogBox.ignoreLogs([
+  'Sending `onAnimatedValueUpdate` with no listeners registered.',
+  'Possible unhandled promise rejection (id:0: Network request failed)',
+  'VirtualizedList: You have a large list that is slow to update',
+]);
+
+LogBox.ignoreAllLogs(true);
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <HomeScreen />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS == "ios" ? spacing.md : spacing.xl2,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)'
+  },
+});

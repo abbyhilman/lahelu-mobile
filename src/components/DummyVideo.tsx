@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable, useWindowDimensions, FlatList, Modal, TextInput, Button, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Pressable, useWindowDimensions, FlatList, Modal, TextInput, Button, Alert, ActivityIndicator, InteractionManager } from 'react-native';
 import { Video, ResizeMode, AVPlaybackStatus, AVPlaybackStatusError } from 'expo-av';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -68,6 +68,7 @@ const DummyVideo = ({ post, activePostId }: DummyVideoProps) => {
         }
     };
 
+
     return (
         <View style={[styles.container, { height }]}>
             {loading && (
@@ -75,16 +76,19 @@ const DummyVideo = ({ post, activePostId }: DummyVideoProps) => {
                     <ActivityIndicator size="large" color="#ffffff" />
                 </View>
             )}
+
             <Video
                 ref={video}
                 style={[StyleSheet.absoluteFill, styles.video]}
                 source={{ uri: post.video }}
                 resizeMode={ResizeMode.COVER}
                 onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-                isLooping
+                shouldPlay={false}
                 onLoadStart={handleLoadStart}
                 onLoad={handleLoad}
             />
+
+
 
             <Pressable style={styles.content}>
                 <LinearGradient

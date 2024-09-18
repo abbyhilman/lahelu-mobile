@@ -5,7 +5,6 @@ import VideoPost from '@/components/DummyVideo';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useRef, useState } from 'react';
 import Animated, { SlideInLeft, SlideOutLeft, useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import SvgFromUrl from '@/components/ImageSvg';
 // import SvgUri from 'react-native-svg-uri';
 
 const dummyPosts = [
@@ -93,6 +92,12 @@ const HomeScreen = () => {
         setModalVisible(false);
     };
 
+    const getItemLayout = (data, index) => ({
+        length: 300, // Height of each item (adjust based on your item height)
+        offset: 300 * index,
+        index,
+    });
+
     return (
         <View style={styles.container}>
             <StatusBar style="light" />
@@ -130,12 +135,16 @@ const HomeScreen = () => {
                 data={posts}
                 renderItem={({ item }) => <VideoPost post={item} activePostId={activePostId} />}
                 keyExtractor={(item, index) => `${item.id}-${index}`}
+                initialNumToRender={5}  // Render only 5 items initially
+                windowSize={10}         // Number of items kept in memory
                 pagingEnabled
                 viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
                 showsVerticalScrollIndicator={false}
                 onEndReached={onEndReached}
                 onEndReachedThreshold={3}
                 style={styles.feedArea}
+                removeClippedSubviews={true}
+                getItemLayout={getItemLayout}
             />
 
             <Animated.View style={[styles.toggleButton, animatedButtonStyle]}>
